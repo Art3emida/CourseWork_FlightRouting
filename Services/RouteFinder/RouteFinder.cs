@@ -1,12 +1,17 @@
-﻿namespace CourseWork_FlightRouting.Services.RouteFinder
+﻿using CourseWork_FlightRouting.Exceptions;
+
+namespace CourseWork_FlightRouting.Services.RouteFinder
 {
     public class RouteFinder : IRouteFinder
     {
         public List<List<string>> FindAllRoutes(
             Dictionary<string, List<string>> graph,
-            string start,
+            string departure,
             string destination
         ) {
+            if (departure == destination)
+                throw new InvalidRouteException("Departure and destination cannot be the same.");
+
             var result = new List<List<string>>();
             var visited = new HashSet<string>();
             var path = new List<string>();
@@ -40,7 +45,7 @@
                 visited.Remove(current);
             }
 
-            RecursiveSearch(start);
+            RecursiveSearch(departure);
             return result;
         }
     }

@@ -1,4 +1,5 @@
-﻿using CourseWork_FlightRouting.Models;
+﻿using CourseWork_FlightRouting.Exceptions;
+using CourseWork_FlightRouting.Models;
 using CourseWork_FlightRouting.Services.FlightService;
 using CourseWork_FlightRouting.Services.GraphBuilder;
 using CourseWork_FlightRouting.Services.RouteFinder;
@@ -61,6 +62,10 @@ namespace CourseWork_FlightRouting
                     _userOutput.ShowMessage($"{string.Join(" -> ", route)} | layovers: {layovers}");
                 }
             }
+            catch (InvalidRouteException ex)
+            {
+                _userOutput.ShowMessage(ex.Message);
+            }
             catch (InvalidOperationException ex)
             {
                 _userOutput.ShowMessage(ex.Message);
@@ -70,12 +75,10 @@ namespace CourseWork_FlightRouting
         private void ShowAvailableFlights()
         {
             _userOutput.ShowMessage("Available flights:");
-
             foreach (Flight flight in _flightService.GetAvailableFlights())
             {
                 _userOutput.ShowMessage(flight.ToString());
             }
-
             _userOutput.ShowMessage("-------------");
         }
 
